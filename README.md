@@ -1,5 +1,3 @@
-Aqui está um exemplo de **README.md** para o seu sistema Laravel usando **autenticação via Sanctum**, baseado nas rotas que você mostrou:
-
 ````markdown
 # Sistema Laravel com API e Autenticação via Sanctum
 
