@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ProfessorController;
 use App\Http\Controllers\ProfessorTurmaController;
+use App\Http\Controllers\QuestoesController;
 use App\Http\Controllers\TurmaController;
 use App\Models\Questoes;
 use App\Services\ApiResponse;
@@ -29,7 +30,7 @@ Route::prefix('professor/turma')->group(function () {
     Route::delete('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'destroy']);
 });
 
-Route::apiResource("questoes", Questoes::class);
+Route::apiResource("questoes", QuestoesController::class);
 Route::apiResource("turma", TurmaController::class);
 
 // Route::post("/login", [AuthController::class,"login"]);
