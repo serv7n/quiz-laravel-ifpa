@@ -1,0 +1,35 @@
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlunoController;
+use App\Http\Controllers\AuthController;
+
+use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\ProfessorTurmaController;
+use App\Http\Controllers\TurmaController;
+use App\Models\Questoes;
+use App\Services\ApiResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/status', function () {
+    return ApiResponse::success('Api is running');
+});
+
+Route::apiResource("admin", AdminController::class);
+Route::apiResource("aluno", AlunoController::class);
+Route::apiResource("professor", ProfessorController::class);
+
+// professor
+Route::prefix('professor/turma')->group(function () {
+    Route::get('/', [ProfessorTurmaController::class, 'index']);
+    Route::post('/', [ProfessorTurmaController::class, 'store']);
+    Route::get('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'show']);
+    Route::put('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'update']);
+    Route::delete('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'destroy']);
+});
+
+Route::apiResource("questoes", Questoes::class);
+Route::apiResource("turma", TurmaController::class);
+
+// Route::post("/login", [AuthController::class,"login"]);
