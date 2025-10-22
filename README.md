@@ -1,4 +1,4 @@
-# Sistema Laravel API - Gestão Escolar
+# Sistema Laravel API - Quiz Escolar
 
 Este projeto é uma API desenvolvida em **Laravel** para gerenciamento de alunos, professores, turmas, questões e administradores. A API pode ser estendida para incluir autenticação via **Laravel Sanctum**, mas atualmente possui endpoints públicos para testes.
 
