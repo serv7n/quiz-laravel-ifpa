@@ -1,7 +1,6 @@
-````markdown
-# Sistema Laravel com API e Autenticação via Sanctum
+# Sistema Laravel API - Gestão Escolar
 
-Este projeto é uma API desenvolvida em **Laravel** que utiliza **Laravel Sanctum** para autenticação de usuários. O sistema inclui gerenciamento de clientes e endpoints protegidos que requerem autenticação via token.
+Este projeto é uma API desenvolvida em **Laravel** para gerenciamento de alunos, professores, turmas, questões e administradores. A API pode ser estendida para incluir autenticação via **Laravel Sanctum**, mas atualmente possui endpoints públicos para testes.
 
 ---
 
@@ -9,130 +8,157 @@ Este projeto é uma API desenvolvida em **Laravel** que utiliza **Laravel Sanctu
 
 - Laravel 10
 - PHP 8.x
-- MySQL ou MariaDB
-- Laravel Sanctum para autenticação via token
+- MySQL / MariaDB
 - Composer
+- Laravel Sanctum (opcional para autenticação futura)
 
 ---
 
 ## Funcionalidades
 
-- Autenticação de usuários via **Sanctum**
-- Rotas protegidas que exigem token válido
-- CRUD completo para clientes (`ClientController`)
-- Endpoint de status da API para verificação de funcionamento
-- Estrutura pronta para adicionar novos recursos e controllers
+- CRUD completo para:
+  - Administradores (`Admin`)
+  - Alunos (`Aluno`)
+  - Professores (`Professor`)
+  - Turmas (`Turma`)
+  - Questões (`Questoes`)
+- Relacionamento entre professores e turmas (`ProfessorTurma`)
+- Endpoint de status da API para verificação
 
 ---
 
-## Rotas da API
+## Endpoints da API
 
-### Autenticação
+### Status da API
 
-- `POST /login`  
-  Faz login do usuário e retorna um token de acesso.  
-  **Exemplo de requisição:**
-
-  ```json
-  POST /login
-  {
-      "email": "usuario@exemplo.com",
-      "senha": "senha123"
-  }
-````
+- `GET /status`  
+  Retorna se a API está rodando corretamente.
 
 **Exemplo de resposta:**
 
 ```json
 {
-    "success": true,
-    "data": {
-        "token": "SEU_TOKEN_AQUI"
-    }
+  "success": true,
+  "data": "Api is running"
 }
-```
 
-### Endpoints protegidos (necessário token)
+Administradores (admin)
 
-* `GET /status`
-  Retorna o status da API.
-  Requer o token do usuário no header `Authorization: Bearer <token>`.
+CRUD completo via apiResource:
 
-* `apiResource /clients`
-  Endpoints CRUD para gerenciamento de clientes:
+    GET /admin → Listar todos os administradores
 
-  * `GET /clients` → Listar todos os clientes
-  * `POST /clients` → Criar cliente
-  * `GET /clients/{id}` → Visualizar cliente específico
-  * `PUT /clients/{id}` → Atualizar cliente
-  * `DELETE /clients/{id}` → Deletar cliente
+    POST /admin → Criar um administrador
 
-  Todos os endpoints acima exigem token de autenticação no header.
+    GET /admin/{id} → Visualizar administrador específico
 
----
+    PUT /admin/{id} → Atualizar administrador
 
-## Como rodar o projeto
+    DELETE /admin/{id} → Deletar administrador
 
-1. Clonar o repositório:
+Alunos (aluno)
 
-```bash
+CRUD completo via apiResource:
+
+    GET /aluno → Listar todos os alunos
+
+    POST /aluno → Criar um aluno
+
+    GET /aluno/{id} → Visualizar aluno específico
+
+    PUT /aluno/{id} → Atualizar aluno
+
+    DELETE /aluno/{id} → Deletar aluno
+
+Professores (professor)
+
+CRUD completo via apiResource:
+
+    GET /professor → Listar todos os professores
+
+    POST /professor → Criar um professor
+
+    GET /professor/{id} → Visualizar professor específico
+
+    PUT /professor/{id} → Atualizar professor
+
+    DELETE /professor/{id} → Deletar professor
+
+Relacionamento Professor ↔ Turma (professor/turma)
+
+Endpoints para gerenciar associações:
+
+    GET /professor/turma → Listar todas as associações
+
+    POST /professor/turma → Criar associação
+
+    GET /professor/turma/{professor_id}/{turma_id} → Visualizar associação específica
+
+    PUT /professor/turma/{professor_id}/{turma_id} → Atualizar associação
+
+    DELETE /professor/turma/{professor_id}/{turma_id} → Remover associação
+
+Turmas (turma)
+
+CRUD completo via apiResource:
+
+    GET /turma → Listar todas as turmas
+
+    POST /turma → Criar turma
+
+    GET /turma/{id} → Visualizar turma específica
+
+    PUT /turma/{id} → Atualizar turma
+
+    DELETE /turma/{id} → Deletar turma
+
+Questões (questoes)
+
+CRUD completo via apiResource:
+
+    GET /questoes → Listar todas as questões
+
+    POST /questoes → Criar questão
+
+    GET /questoes/{id} → Visualizar questão específica
+
+    PUT /questoes/{id} → Atualizar questão
+
+    DELETE /questoes/{id} → Deletar questão
+
+Estrutura do projeto
+
+    app/Models → Models do sistema
+
+    app/Http/Controllers → Controllers da API
+
+    routes/api.php → Definição das rotas da API
+
+    app/Services/ApiResponse.php → Classe para padronizar respostas JSON
+
+Como rodar o projeto
+
+    Clone o repositório:
+
 git clone https://github.com/usuario/seu-projeto.git
 cd seu-projeto
-```
 
-2. Instalar dependências:
+    Instale dependências:
 
-```bash
 composer install
-```
 
-3. Configurar variáveis de ambiente:
+    Configure o arquivo .env:
 
-```bash
 cp .env.example .env
 php artisan key:generate
-```
 
-* Configure o banco de dados no arquivo `.env`.
+    Configure o banco de dados no .env.
 
-4. Rodar migrations:
+    Rode as migrations:
 
-```bash
 php artisan migrate
-```
 
-5. Rodar servidor local:
+    Rode o servidor local:
 
-```bash
 php artisan serve
-```
 
----
-
-## Observações
-
-* Para usar os endpoints protegidos, sempre inclua o token retornado pelo login no header:
-
-```
-Authorization: Bearer SEU_TOKEN
-```
-
-* Laravel Sanctum garante que cada token seja seguro e possa ser revogado facilmente.
-
----
-
-## Estrutura do projeto
-
-* `app/Models` → Models da aplicação
-* `app/Http/Controllers` → Controllers da API
-* `routes/api.php` → Definição das rotas da API
-* `app/Services/ApiResponse.php` → Classe para padronizar respostas JSON
-
-```
-
----
-
-Se você quiser, posso criar **uma versão ainda mais completa do README**, incluindo **tabela de endpoints de todos os controllers que você criou (`Aluno`, `Turma`, `Professor`, `Questoes`, etc.)** para deixar a documentação pronta para qualquer desenvolvedor usar a API.  
-
-Quer que eu faça isso?
-```
