@@ -1,65 +1,140 @@
-<<<<<<< HEAD
-# quiz-laravel-ifpa
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Aqui está um exemplo de **README.md** para o seu sistema Laravel usando **autenticação via Sanctum**, baseado nas rotas que você mostrou:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+````markdown
+# Sistema Laravel com API e Autenticação via Sanctum
 
-## About Laravel
+Este projeto é uma API desenvolvida em **Laravel** que utiliza **Laravel Sanctum** para autenticação de usuários. O sistema inclui gerenciamento de clientes e endpoints protegidos que requerem autenticação via token.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tecnologias utilizadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Laravel 10
+- PHP 8.x
+- MySQL ou MariaDB
+- Laravel Sanctum para autenticação via token
+- Composer
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Funcionalidades
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Autenticação de usuários via **Sanctum**
+- Rotas protegidas que exigem token válido
+- CRUD completo para clientes (`ClientController`)
+- Endpoint de status da API para verificação de funcionamento
+- Estrutura pronta para adicionar novos recursos e controllers
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Rotas da API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Autenticação
 
-### Premium Partners
+- `POST /login`  
+  Faz login do usuário e retorna um token de acesso.  
+  **Exemplo de requisição:**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+  ```json
+  POST /login
+  {
+      "email": "usuario@exemplo.com",
+      "senha": "senha123"
+  }
+````
 
-## Contributing
+**Exemplo de resposta:**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```json
+{
+    "success": true,
+    "data": {
+        "token": "SEU_TOKEN_AQUI"
+    }
+}
+```
 
-## Code of Conduct
+### Endpoints protegidos (necessário token)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* `GET /status`
+  Retorna o status da API.
+  Requer o token do usuário no header `Authorization: Bearer <token>`.
 
-## Security Vulnerabilities
+* `apiResource /clients`
+  Endpoints CRUD para gerenciamento de clientes:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  * `GET /clients` → Listar todos os clientes
+  * `POST /clients` → Criar cliente
+  * `GET /clients/{id}` → Visualizar cliente específico
+  * `PUT /clients/{id}` → Atualizar cliente
+  * `DELETE /clients/{id}` → Deletar cliente
 
-## License
+  Todos os endpoints acima exigem token de autenticação no header.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
->>>>>>> 597c61b (falta testar)
+---
+
+## Como rodar o projeto
+
+1. Clonar o repositório:
+
+```bash
+git clone https://github.com/usuario/seu-projeto.git
+cd seu-projeto
+```
+
+2. Instalar dependências:
+
+```bash
+composer install
+```
+
+3. Configurar variáveis de ambiente:
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+* Configure o banco de dados no arquivo `.env`.
+
+4. Rodar migrations:
+
+```bash
+php artisan migrate
+```
+
+5. Rodar servidor local:
+
+```bash
+php artisan serve
+```
+
+---
+
+## Observações
+
+* Para usar os endpoints protegidos, sempre inclua o token retornado pelo login no header:
+
+```
+Authorization: Bearer SEU_TOKEN
+```
+
+* Laravel Sanctum garante que cada token seja seguro e possa ser revogado facilmente.
+
+---
+
+## Estrutura do projeto
+
+* `app/Models` → Models da aplicação
+* `app/Http/Controllers` → Controllers da API
+* `routes/api.php` → Definição das rotas da API
+* `app/Services/ApiResponse.php` → Classe para padronizar respostas JSON
+
+```
+
+---
+
+Se você quiser, posso criar **uma versão ainda mais completa do README**, incluindo **tabela de endpoints de todos os controllers que você criou (`Aluno`, `Turma`, `Professor`, `Questoes`, etc.)** para deixar a documentação pronta para qualquer desenvolvedor usar a API.  
+
+Quer que eu faça isso?
+```
