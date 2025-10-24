@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Aluno;
 use App\Services\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AlunoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Listar todos os alunos.
      */
     public function index()
     {
-        return ApiResponse::success(data: Aluno::all());
+        $alunos = Aluno::all();
+        return ApiResponse::success(data: $alunos);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -29,26 +29,28 @@ class AlunoController extends Controller
             "turma_id" => "nullable|exists:turma,id"
         ]);
 
-        $aluno = Aluno::create($request->all());
+        $aluno = Aluno::create([
+            'user' => $request->user,
+            'email' => $request->email,
+            'senha' => Hash::make($request->senha),
+            'pontuacao' => $request->pontuacao,
+            'turma_id' => $request->turma_id,
+        ]);
+
         return ApiResponse::success($aluno);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         $aluno = Aluno::find($id);
-        if ($aluno) {
-            return ApiResponse::success($aluno);
-        } else {
-            return ApiResponse::error("aluno not found");
+        if (!$aluno) {
+            return ApiResponse::error("Aluno não encontrado");
         }
+        return ApiResponse::success($aluno);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -60,25 +62,51 @@ class AlunoController extends Controller
         ]);
 
         $aluno = Aluno::find($id);
-        if ($aluno) {
-            $aluno->update($request->all());
-            return ApiResponse::success($aluno);
-        } else {
-            return ApiResponse::error("aluno not found");
+        if (!$aluno) {
+            return ApiResponse::error("Aluno não encontrado");
         }
+
+        $aluno->update([
+            'user' => $request->user,
+            'email' => $request->email,
+            'senha' => Hash::make($request->senha),
+            'pontuacao' => $request->pontuacao,
+            'turma_id' => $request->turma_id,
+        ]);
+
+        return ApiResponse::success($aluno);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $aluno = Aluno::find($id);
-        if ($aluno) {
-            $aluno->delete();
-            return response()->json($aluno, 200);
-        } else {
-            return response()->json([["message" => "aluno not found"]], status: 404);
+        if (!$aluno) {
+            return ApiResponse::error("Aluno não encontrado");
         }
+
+        $aluno->delete();
+        return ApiResponse::success("Aluno removido com sucesso");
+    }
+
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            "user" => "required",
+            "senha" => "required"
+        ]);
+
+        $aluno = Aluno::where("user", $request->user)->first();
+
+        if (!$aluno) {
+            return ApiResponse::error("Usuário não encontrado");
+        }
+
+        if (!Hash::check($request->senha, $aluno->senha)) {
+            return ApiResponse::error("Senha incorreta, tente novamente");
+        }
+
+        return ApiResponse::success($aluno);
     }
 }

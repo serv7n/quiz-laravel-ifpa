@@ -19,13 +19,14 @@ Route::get('/status', function () {
 
 Route::apiResource("admin", AdminController::class);
 Route::apiResource("aluno", AlunoController::class);
-Route::apiResource("professor", ProfessorController::class);
+Route::post("/aluno/login", [AlunoController::class, "login"]);
+Route::apiResource("professor", controller: ProfessorController::class);
 
 // professor
 Route::prefix('professor/turma')->group(function () {
     Route::get('/', [ProfessorTurmaController::class, 'index']);
     Route::post('/', [ProfessorTurmaController::class, 'store']);
-    Route::get('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'show']);
+    Route::get('{professor_id}/{turma_id}', action: [ProfessorTurmaController::class, 'show']);
     Route::put('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'update']);
     Route::delete('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'destroy']);
 });

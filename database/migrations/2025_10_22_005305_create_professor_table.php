@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('professor', function (Blueprint $table) {
-            $table->id(); // equivale a INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+            $table->id(); 
             $table->string('user', 100);
             $table->string('email', 150)->nullable();
             $table->string('password', 255);
-            $table->timestamps(); // adiciona created_at e updated_at (opcional, mas recomendado)
+            $table->timestamps();
         });
     }
 
