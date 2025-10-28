@@ -6,9 +6,9 @@ Este projeto é uma API desenvolvida em **Laravel** para gerenciamento de alunos
 
 ## Tecnologias utilizadas
 
-- Laravel 10
-- PHP 8.x
-- MySQL / MariaDB
+- Laravel 12
+- PHP 8.2
+- MySQL
 - Composer
 - Laravel Sanctum (opcional para autenticação futura)
 
@@ -140,8 +140,8 @@ Como rodar o projeto
 
     Clone o repositório:
 
-git clone https://github.com/usuario/seu-projeto.git
-cd seu-projeto
+git clone https://github.com/serv7n/quiz-laravel-ifpa
+cd quiz-laravel-ifpa
 
     Instale dependências:
 

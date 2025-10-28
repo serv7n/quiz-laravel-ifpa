@@ -13,5 +13,10 @@ class TurmaSeeder extends Seeder
             'id' => 1,
             'name' => 'Turma A',
         ]);
+        Turma::create([
+            'id' => 1,
+            'name' => 'Turma A',
+        ]);
     }
+    
 }

@@ -15,9 +15,9 @@ class AlunoFactory extends Factory
         return [
             'user' => $this->faker->unique()->userName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'senha' => Hash::make('123456'), // senha padrão para testes
+            'senha' => Hash::make('123456'), 
             'pontuacao' => $this->faker->numberBetween(0,1000),
-            'turma_id' => null, // ou defina manualmente depois no seeder
+            'turma_id' => null, 
         ];
     }
 }

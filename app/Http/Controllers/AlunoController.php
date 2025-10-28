@@ -109,4 +109,30 @@ class AlunoController extends Controller
 
         return ApiResponse::success($aluno);
     }
+    public function refresh(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:aluno,id',
+        ]);
+
+        $aluno = Aluno::with('turma')->find($request->id);
+
+        if (!$aluno) {
+            return ApiResponse::error("Aluno não encontrado");
+        }
+
+        $dados = [
+            'id' => $aluno->id,
+            'user' => $aluno->user,
+            'pontuacao' => $aluno->pontuacao,
+            'turma' => $aluno->turma ? [
+                'id' => $aluno->turma->id,
+                'nome' => $aluno->turma->nome ?? null,
+            ] : null,
+        ];
+
+        return ApiResponse::success($dados);
+    }
+
+
 }

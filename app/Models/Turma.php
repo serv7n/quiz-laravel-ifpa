@@ -28,4 +28,14 @@ class Turma extends Model
     {
         return $this->hasMany(Questoes::class, 'turma_id');
     }
+    public function professores()
+    {
+        return $this->belongsToMany(
+            Professor::class,    // model relacionado
+            'professor_turma',   // tabela pivot
+            'turma_id',          // chave estrangeira da turma
+            'professor_id'       // chave estrangeira do professor
+        )->select('id', 'user'); // somente campos necessários
+    }
+
 }

@@ -20,9 +20,10 @@ Route::get('/status', function () {
 Route::apiResource("admin", AdminController::class);
 Route::apiResource("aluno", AlunoController::class);
 Route::post("/aluno/login", [AlunoController::class, "login"]);
+Route::post('/aluno/refresh', [AlunoController::class, 'refresh']);
+
 Route::apiResource("professor", controller: ProfessorController::class);
 
-// professor
 Route::prefix('professor/turma')->group(function () {
     Route::get('/', [ProfessorTurmaController::class, 'index']);
     Route::post('/', [ProfessorTurmaController::class, 'store']);

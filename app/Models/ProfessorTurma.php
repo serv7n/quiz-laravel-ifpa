@@ -19,6 +19,16 @@ class ProfessorTurma extends Model
         'professor_id',
         'turma_id',
     ];
+    // app/Models/Turma.php
+    public function professores()
+    {
+        return $this->belongsToMany(
+            Professor::class,       // modelo relacionado
+            'professor_turma',      // nome da tabela pivot
+            'turma_id',             // chave estrangeira da turma na tabela pivot
+            'professor_id'          // chave estrangeira do professor na tabela pivot
+        );
+    }
 
     public $timestamps = false;
 }
