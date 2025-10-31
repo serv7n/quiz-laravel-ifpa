@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TurmaSeeder::class,
             AlunoSeeder::class,
+            ProfessorSeeder::class,
             // QuestoesSeeder::class,
         ]);
     }
