@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aluno;
 use App\Models\Questoes;
 use App\Services\ApiResponse;
 use Illuminate\Http\Request;
@@ -78,4 +79,18 @@ class QuestoesController extends Controller
 
         return ApiResponse::success($questao);
     }
+
+    public function porUsuario($id)
+    {
+        $aluno = Aluno::with('turma')->find($id);
+
+        if (!$aluno || !$aluno->turma) {
+            return ApiResponse::error('Usuário ou turma não encontrados');
+        }
+
+        $questoes = $aluno->turma->questoes()->get();
+
+        return ApiResponse::success($questoes);
+    }
+
 }

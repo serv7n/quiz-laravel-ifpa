@@ -33,6 +33,7 @@ Route::prefix('professor/turma')->group(function () {
 });
 
 Route::apiResource("questoes", QuestoesController::class);
+Route::get('/questoes/usuario/{id}', [QuestoesController::class, 'porUsuario']);
 Route::apiResource("turma", TurmaController::class);
 
 // Route::post("/login", [AuthController::class,"login"]);

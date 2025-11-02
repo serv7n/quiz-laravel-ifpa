@@ -9,21 +9,14 @@ return new class extends Migration {
     {
         Schema::create('questoes', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 255); // ou text(), se preferir
+            $table->string('title', 255);
             $table->string('alt1', 255)->nullable();
             $table->string('alt2', 255)->nullable();
             $table->string('alt3', 255)->nullable();
             $table->string('alt4', 255)->nullable();
             $table->enum('altCorreta', ['alt1', 'alt2', 'alt3', 'alt4']);
             $table->integer('timing')->nullable();
-            $table->unsignedBigInteger('turma_id')->nullable();
             $table->boolean('comecar')->default(false);
-
-            $table->foreign('turma_id')
-                ->references('id')
-                ->on('turma') 
-                ->onUpdate('cascade')
-                ->onDelete('set null');
         });
     }
 

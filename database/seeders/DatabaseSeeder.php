@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
             TurmaSeeder::class,
             AlunoSeeder::class,
             ProfessorSeeder::class,
-            // QuestoesSeeder::class,
+            QuestoesSeeder::class,
         ]);
     }
 }
