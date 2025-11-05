@@ -165,7 +165,56 @@ class AlunoController extends Controller
         $aluno->pontuacao = $request->pontuacao;
         $aluno->save();
 
-        return ApiResponse::success($aluno, 'Pontuação atualizada com sucesso');
+        return ApiResponse::success($aluno);
+    }
+    public function ranking(Request $request)
+    {
+        $request->validate([
+            'aluno_id' => 'required|exists:aluno,id',
+        ]);
+
+        // Busca o aluno que está solicitando o ranking
+        $aluno = Aluno::find($request->aluno_id);
+
+        if (!$aluno) {
+            return ApiResponse::error('Aluno não encontrado');
+        }
+
+        if (!$aluno->turma_id) {
+            return ApiResponse::error('Aluno não pertence a nenhuma turma');
+        }
+
+        // Busca os alunos da mesma turma, ordenando pela pontuação
+        $melhores = Aluno::select('id', 'user', 'pontuacao')
+            ->where('turma_id', $aluno->turma_id)
+            ->orderByDesc('pontuacao')
+            ->take(10)
+            ->get();
+
+        return ApiResponse::success([
+            'turma_id' => $aluno->turma_id,
+            'ranking' => $melhores
+        ]);
     }
 
+
+    public function resetPontuacaoTurma(Request $request)
+    {
+        $request->validate([
+            'turma_id' => 'required|exists:turma,id',
+        ]);
+
+        // Zera as pontuações de todos os alunos da turma
+        $atualizados = Aluno::where('turma_id', $request->turma_id)
+            ->update(['pontuacao' => 0]);
+
+        if ($atualizados === 0) {
+            return ApiResponse::error('Nenhum aluno encontrado nessa turma');
+        }
+
+        return ApiResponse::success([
+            'turma_id' => $request->turma_id,
+            'alunos_atualizados' => $atualizados,
+        ], 'Pontuações da turma resetadas com sucesso');
+    }
 }

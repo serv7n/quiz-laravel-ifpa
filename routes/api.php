@@ -18,16 +18,20 @@ Route::get('/status', function () {
 });
 
 Route::get('/turma/{id}/comecou/{value}', [TurmaController::class, 'alterarComecou']);
+Route::post('/turma/reset-pontuacao', [AlunoController::class, 'resetPontuacaoTurma']);
+Route::apiResource("turma", TurmaController::class);
+
 Route::apiResource("admin", AdminController::class);
+
 Route::apiResource("aluno", AlunoController::class);
 Route::post("/aluno/login", [AlunoController::class, "login"]);
 Route::post('/aluno/refresh', [AlunoController::class, 'refresh']);
 Route::put('/aluno/{id}/turma', [AlunoController::class, 'updateTurma']);
 Route::put('/aluno/{id}/pontuacao', [AlunoController::class, 'updatePontuacao']);
+Route::post('/alunos/ranking', [AlunoController::class, 'ranking']);
 
 
 Route::apiResource("professor", controller: ProfessorController::class);
-
 Route::prefix('professor/turma')->group(function () {
     Route::get('/', [ProfessorTurmaController::class, 'index']);
     Route::post('/', [ProfessorTurmaController::class, 'store']);
@@ -38,6 +42,5 @@ Route::prefix('professor/turma')->group(function () {
 
 Route::apiResource("questoes", QuestoesController::class);
 Route::get('/questoes/usuario/{id}', [QuestoesController::class, 'porUsuario']);
-Route::apiResource("turma", TurmaController::class);
 
 // Route::post("/login", [AuthController::class,"login"]);
