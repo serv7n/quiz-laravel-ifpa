@@ -17,10 +17,14 @@ Route::get('/status', function () {
     return ApiResponse::success('Api is running');
 });
 
+Route::get('/turma/{id}/comecou/{value}', [TurmaController::class, 'alterarComecou']);
 Route::apiResource("admin", AdminController::class);
 Route::apiResource("aluno", AlunoController::class);
 Route::post("/aluno/login", [AlunoController::class, "login"]);
 Route::post('/aluno/refresh', [AlunoController::class, 'refresh']);
+Route::put('/aluno/{id}/turma', [AlunoController::class, 'updateTurma']);
+Route::put('/aluno/{id}/pontuacao', [AlunoController::class, 'updatePontuacao']);
+
 
 Route::apiResource("professor", controller: ProfessorController::class);
 

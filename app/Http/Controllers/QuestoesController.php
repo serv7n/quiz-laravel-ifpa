@@ -88,9 +88,14 @@ class QuestoesController extends Controller
             return ApiResponse::error('Usuário ou turma não encontrados');
         }
 
-        $questoes = $aluno->turma->questoes()->get();
+        $turma = $aluno->turma;
+        $questoes = $turma->questoes()->get();
 
-        return ApiResponse::success($questoes);
+        return ApiResponse::success([
+            'comecou' => $turma->comecou, // ✅ indica se as questões começaram
+            'questoes' => $questoes,       // ✅ lista de questões da turma
+        ]);
     }
+
 
 }

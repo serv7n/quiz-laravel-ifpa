@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('alt4', 255)->nullable();
             $table->enum('altCorreta', ['alt1', 'alt2', 'alt3', 'alt4']);
             $table->integer('timing')->nullable();
-            $table->boolean('comecar')->default(false);
         });
     }
 

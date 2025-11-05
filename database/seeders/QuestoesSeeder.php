@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Questoes;
+use Illuminate\Support\Facades\DB;
 
 class QuestoesSeeder extends Seeder
 {
@@ -21,7 +22,7 @@ class QuestoesSeeder extends Seeder
                 'alt4' => '22',
                 'altCorreta' => 'alt2',
                 'timing' => 15,
-                'turma_id' => 1,
+                'turmas' => [1],
             ],
             [
                 'title' => 'Quem descobriu o Brasil?',
@@ -31,7 +32,7 @@ class QuestoesSeeder extends Seeder
                 'alt4' => 'Tiradentes',
                 'altCorreta' => 'alt3',
                 'timing' => 20,
-                'turma_id' => 1,
+                'turmas' => [1],
             ],
             [
                 'title' => 'Qual planeta é conhecido como “planeta vermelho”?',
@@ -41,7 +42,7 @@ class QuestoesSeeder extends Seeder
                 'alt4' => 'Saturno',
                 'altCorreta' => 'alt2',
                 'timing' => 20,
-                'turma_id' => 2,
+                'turmas' => [2],
             ],
             [
                 'title' => 'Em que linguagem o framework Laravel é escrito?',
@@ -51,7 +52,7 @@ class QuestoesSeeder extends Seeder
                 'alt4' => 'C#',
                 'altCorreta' => 'alt2',
                 'timing' => 25,
-                'turma_id' => 2,
+                'turmas' => [2],
             ],
             [
                 'title' => 'Qual destes animais é um mamífero?',
@@ -61,12 +62,29 @@ class QuestoesSeeder extends Seeder
                 'alt4' => 'Cobra',
                 'altCorreta' => 'alt3',
                 'timing' => 15,
-                'turma_id' => 3,
+                'turmas' => [3],
             ],
         ];
 
-        foreach ($questoes as $questao) {
-            Questoes::create($questao);
+        foreach ($questoes as $dados) {
+            // Cria a questão (sem turma_id)
+            $questao = Questoes::create([
+                'title' => $dados['title'],
+                'alt1' => $dados['alt1'],
+                'alt2' => $dados['alt2'],
+                'alt3' => $dados['alt3'],
+                'alt4' => $dados['alt4'],
+                'altCorreta' => $dados['altCorreta'],
+                'timing' => $dados['timing'],
+            ]);
+
+            // Vincula a questão às turmas na tabela pivot
+            foreach ($dados['turmas'] as $turmaId) {
+                DB::table('questao_turma')->insert([
+                    'questao_id' => $questao->id,
+                    'turma_id' => $turmaId,
+                ]);
+            }
         }
     }
 }

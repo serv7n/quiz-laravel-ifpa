@@ -135,4 +135,37 @@ class AlunoController extends Controller
     }
 
 
+    public function updateTurma(Request $request, $id)
+    {
+        $request->validate([
+            'turma_id' => 'required|exists:turma,id',
+        ]);
+
+        $aluno = Aluno::find($id);
+        if (!$aluno) {
+            return ApiResponse::error('Aluno não encontrado');
+        }
+
+        $aluno->turma_id = $request->turma_id;
+        $aluno->save();
+
+        return ApiResponse::success($aluno, 'Turma atualizada com sucesso');
+    }
+    public function updatePontuacao(Request $request, $id)
+    {
+        $request->validate([
+            'pontuacao' => 'required|integer',
+        ]);
+
+        $aluno = Aluno::find($id);
+        if (!$aluno) {
+            return ApiResponse::error('Aluno não encontrado');
+        }
+
+        $aluno->pontuacao = $request->pontuacao;
+        $aluno->save();
+
+        return ApiResponse::success($aluno, 'Pontuação atualizada com sucesso');
+    }
+
 }

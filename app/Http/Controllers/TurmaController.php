@@ -11,9 +11,6 @@ class TurmaController extends Controller
     public function index()
     {
         $turmas = Turma::with('professores')->get(['id', 'name']);
-
-
-
         return ApiResponse::success(data: $turmas);
     }
 
@@ -24,8 +21,6 @@ class TurmaController extends Controller
         ]);
 
         $turma = Turma::create($request->only('name'));
-
-        // Carrega professores (vazio no início)
         $turma->load('professores:id,name');
 
         return ApiResponse::success($turma);
@@ -47,7 +42,7 @@ class TurmaController extends Controller
         $turma = Turma::find($id);
 
         if (!$turma) {
-            return ApiResponse::error( 'Turma not found');
+            return ApiResponse::error('Turma not found');
         }
 
         $request->validate([
@@ -55,7 +50,6 @@ class TurmaController extends Controller
         ]);
 
         $turma->update($request->only('name'));
-
         $turma->load('professores:id,name');
 
         return ApiResponse::success($turma);
@@ -66,11 +60,38 @@ class TurmaController extends Controller
         $turma = Turma::find($id);
 
         if (!$turma) {
-            return ApiResponse::error( 'Turma not found');
+            return ApiResponse::error('Turma not found');
         }
 
         $turma->delete();
 
         return ApiResponse::success(['id' => $id, 'deleted' => true]);
+    }
+
+    /**
+     * Atualiza o campo "comecou" da turma via rota:
+     * GET /api/turma/{id}/comecou/{value}
+     */
+    public function alterarComecou($id, $value)
+    {
+        $turma = Turma::find($id);
+
+        if (!$turma) {
+            return ApiResponse::error('Turma not found', 404);
+        }
+
+        if (!in_array($value, ['0', '1', 0, 1], true)) {
+            return ApiResponse::error('Invalid value, must be 0 or 1', 400);
+        }
+
+        $turma->comecou = (int) $value;
+        $turma->save();
+
+        return ApiResponse::success([
+            'id' => $turma->id,
+            'name' => $turma->name,
+            'comecou' => (bool) $turma->comecou,
+            'message' => $turma->comecou ? 'Turma iniciada' : 'Turma parada'
+        ]);
     }
 }
