@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             AlunoSeeder::class,
             ProfessorSeeder::class,
             QuestoesSeeder::class,
+            AdminSeeder::class,
         ]);
     }
 }

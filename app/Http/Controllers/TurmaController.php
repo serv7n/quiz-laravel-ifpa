@@ -28,7 +28,7 @@ class TurmaController extends Controller
 
     public function show(string $id)
     {
-        $turma = Turma::with('professores:id,name')->find($id);
+        $turma = Turma::with('professores:id,user')->find($id);
 
         if ($turma) {
             return ApiResponse::success(data: $turma);
@@ -94,4 +94,5 @@ class TurmaController extends Controller
             'message' => $turma->comecou ? 'Turma iniciada' : 'Turma parada'
         ]);
     }
+    
 }

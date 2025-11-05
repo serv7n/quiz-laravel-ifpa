@@ -22,8 +22,10 @@ Route::post('/turma/reset-pontuacao', [AlunoController::class, 'resetPontuacaoTu
 Route::apiResource("turma", TurmaController::class);
 
 Route::apiResource("admin", AdminController::class);
+Route::post('/admin/login', [AdminController::class, 'login']);
 
-Route::apiResource("aluno", AlunoController::class);
+
+Route::apiResource("aluno", controller: AlunoController::class);
 Route::post("/aluno/login", [AlunoController::class, "login"]);
 Route::post('/aluno/refresh', [AlunoController::class, 'refresh']);
 Route::put('/aluno/{id}/turma', [AlunoController::class, 'updateTurma']);
@@ -40,7 +42,8 @@ Route::prefix('professor/turma')->group(function () {
     Route::delete('{professor_id}/{turma_id}', [ProfessorTurmaController::class, 'destroy']);
 });
 
-Route::apiResource("questoes", QuestoesController::class);
-Route::get('/questoes/usuario/{id}', [QuestoesController::class, 'porUsuario']);
+Route::apiResource("questoes", controller: QuestoesController::class);
 
+Route::get('/questoes/usuario/{id}', action: [QuestoesController::class, 'porUsuario']);
+Route::delete('/turma/{id}/questoes', [TurmaController::class, 'apagarTodasQuestoes']);
 // Route::post("/login", [AuthController::class,"login"]);
