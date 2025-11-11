@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use function Laravel\Folio\fake;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Aluno>
@@ -15,9 +16,9 @@ class AlunoFactory extends Factory
         return [
             'user' => $this->faker->unique()->userName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'senha' => Hash::make('123456'), 
-            'pontuacao' => $this->faker->numberBetween(0,1000),
-            'turma_id' => null, 
+            'senha' => Hash::make('123456'),
+            'pontuacao' => $this->faker->numberBetween(0, 1000),
+            'turma_id' => null,
         ];
     }
 }
