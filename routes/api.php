@@ -20,6 +20,8 @@ Route::get('/status', function () {
 Route::get('/turma/{id}/comecou/{value}', [TurmaController::class, 'alterarComecou']);
 Route::post('/turma/reset-pontuacao', [AlunoController::class, 'resetPontuacaoTurma']);
 Route::apiResource("turma", TurmaController::class);
+Route::get('/turma/{id}/questoes', [TurmaController::class, 'listarQuestoes']);
+Route::delete('/questoes', [QuestoesController::class, 'destroyAll']);
 
 Route::apiResource("admin", AdminController::class);
 Route::post('/admin/login', [AdminController::class, 'login']);

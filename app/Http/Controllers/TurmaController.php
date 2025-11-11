@@ -94,5 +94,19 @@ class TurmaController extends Controller
             'message' => $turma->comecou ? 'Turma iniciada' : 'Turma parada'
         ]);
     }
-    
+    public function listarQuestoes($id)
+    {
+        try {
+            // Busca a turma e carrega as questões associadas
+            $turma = Turma::with('questoes')->find($id);
+
+            if (!$turma) {
+                return ApiResponse::error("Turma não encontrada");
+            }
+
+            return ApiResponse::success($turma->questoes);
+        } catch (\Exception $e) {
+            return ApiResponse::error("Erro ao listar questões: ");
+        }
+    }
 }

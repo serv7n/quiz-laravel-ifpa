@@ -97,5 +97,24 @@ class QuestoesController extends Controller
         ]);
     }
 
+    public function destroyAll()
+    {
+        try {
+            $total = Questoes::count();
 
+            if ($total === 0) {
+                return ApiResponse::error('Nenhuma questão encontrada para excluir.');
+            }
+
+            Questoes::truncate(); // ⚡ apaga todas as linhas de forma eficiente
+
+            return ApiResponse::success([
+                'mensagem' => "Todas as {$total} questões foram apagadas com sucesso!"
+            ]);
+        } catch (\Exception $e) {
+            return ApiResponse::error('Erro ao apagar todas as questões: ' . $e->getMessage());
+        }
+    }
+
+    
 }
