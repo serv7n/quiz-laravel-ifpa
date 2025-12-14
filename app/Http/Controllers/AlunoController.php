@@ -217,4 +217,35 @@ class AlunoController extends Controller
             'alunos_atualizados' => $atualizados,
         ], 'Pontuações da turma resetadas com sucesso');
     }
+
+    public function resetTurmas()
+    {
+        // Define turma_id = null para todos os alunos
+        $atualizados = Aluno::query()->update(['turma_id' => null]);
+
+        if ($atualizados === 0) {
+            return ApiResponse::error('Nenhum aluno encontrado para resetar');
+        }
+
+        return ApiResponse::success([
+            'alunos_atualizados' => $atualizados,
+        ], 'Todas as turmas dos alunos foram resetadas com sucesso');
+    }
+
+    public function resetAluno($id)
+    {
+        $aluno = Aluno::find($id);
+
+        if (!$aluno) {
+            return ApiResponse::error('Aluno não encontrado');
+        }
+
+        $aluno->pontuacao = 0;
+        $aluno->turma_id = null;
+        $aluno->save();
+
+        return ApiResponse::success($aluno, 'Aluno resetado com sucesso');
+    }
+
+
 }

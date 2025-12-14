@@ -49,3 +49,7 @@ Route::apiResource("questoes", controller: QuestoesController::class);
 Route::get('/questoes/usuario/{id}', action: [QuestoesController::class, 'porUsuario']);
 Route::delete('/turma/{id}/questoes', [TurmaController::class, 'apagarTodasQuestoes']);
 // Route::post("/login", [AuthController::class,"login"]);
+
+
+Route::get('/alunos/reset-turmas', [AlunoController::class, 'resetTurmas']);
+Route::get('/aluno/{id}/reset', [AlunoController::class, 'resetAluno']);

@@ -28,6 +28,6 @@ class AlunoSeeder extends Seeder
         ]);
 
         // 🔹 Cria 10 alunos aleatórios via Factory
-        Aluno::factory()->count(10)->create();
+        // Aluno::factory()->count(10)->create();
     }
 }
